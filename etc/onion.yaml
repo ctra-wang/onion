@@ -1,0 +1,23 @@
+Name: Onion.api
+Host: 0.0.0.0
+Port: 2165
+Timeout: 2000
+
+Auth:
+  AccessSecret: # the same as core
+  AccessExpire: 259200
+
+CROSConf:
+  Address: '*'
+
+Log:
+  ServiceName: OnionApiLogger
+  Mode: console
+  Path: /home/data/logs/Onion/api
+  Level: info
+  Compress: false
+  KeepDays: 7
+  StackCoolDownMillis: 100
+
+
+
