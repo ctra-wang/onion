@@ -1,5 +1,5 @@
 # 第一阶段：构建包含 goctls 的 Go 环境
-FROM golang:1.22.5-alpine AS build
+FROM golang:1.22.5-alpine AS builder
 # 安装必要的依赖
 RUN apk update && apk add --no-cache git
 # 设置工作目录
