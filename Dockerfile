@@ -5,17 +5,14 @@ ARG PROJECT=onion
 # Define the config file name | 定义配置文件名
 ARG CONFIG_FILE=onion.yaml
 # Define the author | 定义作者
-ARG AUTHOR="example@example.com"
+ARG AUTHOR="lei.wang@example.com"
 
-LABEL org.opencontainers.image.authors=${AUTHOR}
+RUN apk update && apk add tzdata
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-WORKDIR /app
-ENV PROJECT=${PROJECT}
-ENV CONFIG_FILE=${CONFIG_FILE}
 
-COPY ./${PROJECT}_api ./
-COPY etc/${CONFIG_FILE} ./etc/
-
+COPY ./app /app/
+COPY ./etc/onion.yaml /app/etc/config.yaml
+workdir /app/
 EXPOSE 2165
-
-ENTRYPOINT ./${PROJECT}_api -f etc/${CONFIG_FILE}
+ENTRYPOINT ["./app"]
