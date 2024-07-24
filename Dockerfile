@@ -19,10 +19,11 @@ ARG CONFIG_FILE=onion.yaml
 ARG AUTHOR="lei.wang@example.com"
 
 # 复制 goctls 工具从第一阶段
-COPY --from=builder /go/bin/goctls /usr/local/bin/goctls
+COPY --from=builder /usr/local/go /usr/local/go
+#COPY --from=builder /go/bin/goctls /usr/local/bin/goctls
 
 # 设置环境变量
-ENV PATH="/usr/local/bin:${PATH}"
+ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN apk update && apk add tzdata
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
