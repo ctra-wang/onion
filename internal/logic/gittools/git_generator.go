@@ -136,6 +136,53 @@ func GitGenerator(repositoryParams model.RepositoryParams) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		// 云效
+	case 5:
+		visibility := "PRIVATE" // 或者 "PUBLIC"
+		if repositoryParams.RepoPermission == false {
+			visibility = "PUBLIC"
+		}
+
+		data := map[string]interface{}{
+			"name":       repositoryParams.RepoName,
+			"namespace":  repositoryParams.OrgName,
+			"visibility": visibility, // true for private, false for public
+		}
+
+		// 将请求体转换为 JSON
+		body, err := json.Marshal(data)
+		if err != nil {
+			fmt.Println("Failed to marshal request body:", err)
+			return
+		}
+
+		// 创建 HTTP 请求
+		req, err := http.NewRequest("POST", "https://api.aliyun.com/devops/v1/repositories", bytes.NewBuffer(body))
+		if err != nil {
+			fmt.Println("Failed to create request:", err)
+			return
+		}
+
+		// 设置请求头
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer "+repositoryParams.ApiToken)
+
+		// 发送请求
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			fmt.Println("Failed to send request:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		// 检查响应
+		if resp.StatusCode != http.StatusOK {
+			fmt.Printf("Failed to create repository: %s\n", resp.Status)
+			return
+		}
+
+		fmt.Println("云效 Repository created successfully!")
 	}
 
 }
