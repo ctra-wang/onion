@@ -23,7 +23,6 @@ package main
 import (
 	"flag"
 	"fmt"
-
 	"github.com/ctra-wang/onion/internal/config"
 	"github.com/ctra-wang/onion/internal/handler"
 	"github.com/ctra-wang/onion/internal/svc"
@@ -47,5 +46,6 @@ func main() {
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
+
 	server.Start()
 }
