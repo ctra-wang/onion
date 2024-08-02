@@ -7,7 +7,6 @@ WORKDIR /go/src/app
 
 # 安装 goctls
 RUN go install github.com/suyuan32/goctls@latest
-RUN sudo apt install -y protobuf-compiler
 
 # 第二阶段：创建 Alpine 镜像并设置环境变量
 FROM alpine:3.19
@@ -30,6 +29,7 @@ ENV PATH="/usr/local/go/bin:/usr/local/bin:${PATH}"
 #ENV PATH="/usr/local/bin:${PATH}"
 
 RUN apk update && apk add tzdata
+RUN sudo apt install -y protobuf-compiler
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 COPY ./app /app/
