@@ -28,13 +28,23 @@ COPY --from=builder /go/bin/goctls /usr/local/bin/goctls
 ENV PATH="/usr/local/go/bin:/usr/local/bin:${PATH}"
 #ENV PATH="/usr/local/bin:${PATH}"
 
-RUN apk update && apk add tzdata
-RUN sudo apt install -y protobuf-compiler
+# 安装必要的依赖
+RUN apk update && apk add --no-cache tzdata protobuf
+
+# 安装 protoc-gen-go
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+# 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+# 复制应用代码和配置文件
 COPY ./app /app/
 COPY ./etc/onion.yaml /app/etc/config.yaml
+
+# 设置工作目录
 workdir /app/
+
+# 暴露端口
 EXPOSE 2165
 
+# 设置入口点
 ENTRYPOINT ["./app"]
